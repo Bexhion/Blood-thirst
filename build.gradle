@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "${mod_version}${build_state}-${build_number}"
+group = "bexhion.bloodthirst"
+archivesBaseName = mod_name
+
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "${mc_version}-${forge_version}"
+    runDir = "run"
+
+    mappings = ${mc_mappings}
+
+    replace '@BUILD@', project.build_number
+    replace '@BUILDSTATE@', project.build_state
+    replace '@VERSION@', project.mod_version
+
+    replaceIn 'RefMain.java'
+
+    makeObfSourceJar = false
+}
+
+dependencies {
+
+}
+
+processResources {
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+def parseConfig(File config) {
+    config.withReader {
+        def property = new Properties()
+        property.load(it)
+        return (new ConfigSlurper().parse(property))
+    }
+}

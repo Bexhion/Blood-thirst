@@ -1,0 +1,14 @@
+[{
+  "modid": "bloodthirst",
+  "name": "Blood Thirst",
+  "description": "Improving Minecraft's combat mechanics one step at a time",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Bexhion"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}]
